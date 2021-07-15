@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="{{ asset('assets/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="{{ asset('assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css"> --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 @endsection
 
 @section('content')
@@ -31,19 +36,27 @@
 
         <!-- /.box-header -->
         <div class="box-body">
+            <div class="table-responsive">
             <table id="products-in-table" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Products</th>
-                    <th>Supplier</th>
-                    <th>QTY</th>
-                    <th>Tanggal Masuk</th>
-                    <th></th>
+                    <th>No</th>
+                    <th>No. Form</th>
+                    <th>No. Asset</th>
+                    <th>Nama Barang</th>
+                    <th>Jenis Kategori</th>
+                    <th>Nama Kategori</th>
+                    <th>PO</th>
+                    <th>Tanggal Terima</th>
+                    <th>Lokasi Terima</th>
+                    <th>Qty</th>
+                    <th>PIC</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
             </table>
+        </div>
         </div>
         <!-- /.box-body -->
     </div>
@@ -153,6 +166,43 @@
         })
     </script>
 
+    <script type="text/javascript">  
+        $('#btn').click(function(e) {
+            var i=1;
+            var number_of = $('#quantity').val();
+            for(i;i<=number_of;i++)
+            {
+                // <input type="number" id="number_of_textbox" class="form-control" name="qty" required><br>
+            $('#serial_number').append('<input required class="form-control" type="text" name="serial_number'+i+'" id="serial_number'+i+'" placeholder="Serial Number '+i+'"><br>');
+            }
+        });
+    </script>
+
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('.livesearch').select2({
+            placeholder: 'Select movie',
+            ajax: {
+                url: '/ajax-autocomplete-search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        })
+        });
+    </script>
+
     <script type="text/javascript">
         var table = $('#products-in-table').DataTable({
             processing: true,
@@ -160,10 +210,25 @@
             ajax: "{{ route('api.productsIn') }}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'products_name', name: 'products_name'},
-                {data: 'supplier_name', name: 'supplier_name'},
+                {data: 'nomor_form', name: 'nomor_form'},
+                {data: 'nomor_asset', name: 'nomor_asset'},
+                {data: 'nama_barang', name: 'nama_barang'},
+                {data: 'jenis_kategori', name: 'jenis_kategori',
+                "render": function (data, type, row) {
+                        if ( row.jenis_kategori === '1') {
+                            return 'Asset';
+                        }
+                        else{
+                            return 'Consumable';
+                        }
+                    }
+                },
+                {data: 'nama_kategori', name: 'nama_kategori'},
+                {data: 'po_string', name: 'po_string'},
+                {data: 'tanggal_terima', name: 'Tanggal Terima'},
+                {data: 'lokasi_terima', name: 'Lokasi Terima'},
                 {data: 'qty', name: 'qty'},
-                {data: 'tanggal', name: 'tanggal'},
+                {data: 'pic', name: 'pic'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
@@ -189,10 +254,16 @@
                     $('.modal-title').text('Edit Products In');
 
                     $('#id').val(data.id);
-                    $('#product_id').val(data.product_id);
-                    $('#supplier_id').val(data.supplier_id);
-                    $('#qty').val(data.qty);
-                    $('#tanggal').val(data.tanggal);
+                    $('#nama_kategori').val(data.nama_kategori);
+                    $('#jenis_kategori').val(data.jenis_kategori).change();
+                    $('#nama_barang').val(data.nama_barang);
+                    $('#po_string').val(data.po_string);
+                    $('#tanggal_terima').val(data.tanggal_terima);
+                    $('#lokasi_terima').val(data.lokasi_terima);
+                    $('#quantity').val(data.quantity);
+                    $('#serial_number').val(data.serial_number);
+                    $('#spesifikasi').val(data.spesifikasi);
+                    $('#remarks').val(data.remarks);
                 },
                 error : function() {
                     alert("Nothing Data");

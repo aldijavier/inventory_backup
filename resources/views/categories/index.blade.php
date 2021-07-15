@@ -26,7 +26,11 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Kode Barang</th>
+                    <th>Nama</th>
+                    <th>Spesifikasi</th>
+                    <th>Brand</th>
+                    <th>Category</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -64,20 +68,38 @@
     {{--</script>--}}
 
     <script type="text/javascript">
+    document.getElementById('Noite')
         var table = $('#categories-table').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('api.categories') }}",
             columns: [
                 {data: 'id', name: 'id'},
+                {data: 'kode_barang', name: 'kode_barang'},
                 {data: 'name', name: 'name'},
+                {data: 'spek', name: 'spek'},
+                {data: 'brand', name: 'brand'},
+                {data: 'category', name: 'category',
+                    "render": function (data, type, row) {
+                        if ( row.category === '1') {
+                            return 'Asset';
+                        }
+                        else{
+                            return 'Consumable';
+                        }
+                    }
+                },
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
 
         function addForm() {
             save_method = "add";
+            $('input[kode_barang=_method]').val('POST');
             $('input[name=_method]').val('POST');
+            $('input[spek=_method]').val('POST');
+            $('input[brand=_method]').val('POST');
+            $('input[category=_method]').val('POST');
             $('#modal-form').modal('show');
             $('#modal-form form')[0].reset();
             $('.modal-title').text('Add Categories');
@@ -85,7 +107,11 @@
 
         function editForm(id) {
             save_method = 'edit';
+            $('input[kode_barang=_method]').val('PATCH');
             $('input[name=_method]').val('PATCH');
+            $('input[spek=_method]').val('PATCH');
+            $('input[brand=_method]').val('PATCH');
+            $('input[category=_method]').val('PATCH');
             $('#modal-form form')[0].reset();
             $.ajax({
                 url: "{{ url('categories') }}" + '/' + id + "/edit",
@@ -96,7 +122,11 @@
                     $('.modal-title').text('Edit Categories');
 
                     $('#id').val(data.id);
+                    $('#kode_barang').val(data.kode_barang);
                     $('#name').val(data.name);
+                    $('#spek').val(data.spek);
+                    $('#brand').val(data.brand);
+                    $('#category').val(data.category);
                 },
                 error : function() {
                     alert("Nothing Data");

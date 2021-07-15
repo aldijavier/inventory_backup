@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Product;
+use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -20,12 +21,24 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $categoryz = DB::table('categories')
+            ->get()
+            ->pluck('name','id');
+        
+        $products = DB::table('list_categories')->pluck("name","id");
+
         $category = Category::orderBy('name','ASC')
             ->get()
             ->pluck('name','id');
 
         $producs = Product::all();
-        return view('products.index', compact('category'));
+        return view('products.index', compact('category', 'products', 'categoryz'));
+    }
+
+    public function getStates($id) 
+    {        
+        $states = DB::table("categories")->where("category",$id)->pluck("name", "name");
+        return json_encode($states);
     }
 
     /**
@@ -52,9 +65,7 @@ class ProductController extends Controller
 
         $this->validate($request , [
             'nama'          => 'required|string',
-            'harga'         => 'required',
             'qty'           => 'required',
-            'image'         => 'required',
             'category_id'   => 'required',
         ]);
 
@@ -169,21 +180,21 @@ class ProductController extends Controller
         $product = Product::all();
 
         return Datatables::of($product)
-            ->addColumn('category_name', function ($product){
-                return $product->category->name;
-            })
-            ->addColumn('show_photo', function($product){
-                if ($product->image == NULL){
-                    return 'No Image';
-                }
-                return '<img class="rounded-square" width="50" height="50" src="'. url($product->image) .'" alt="">';
-            })
+            // ->addColumn('category_name', function ($product){
+            //     return $product->category->name;
+            // })
+            // ->addColumn('show_photo', function($product){
+            //     if ($product->image == NULL){
+            //         return 'No Image';
+            //     }
+            //     return '<img class="rounded-square" width="50" height="50" src="'. url($product->image) .'" alt="">';
+            // })
             ->addColumn('action', function($product){
                 return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a> ' .
                     '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                     '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
-            ->rawColumns(['category_name','show_photo','action'])->make(true);
+            ->rawColumns(['action'])->make(true);
 
     }
 }

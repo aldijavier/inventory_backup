@@ -9,22 +9,63 @@
                         <span aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title"></h3>
                 </div>
-
-
+                
+                
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
-
-
+                    
+                    
                     <div class="box-body">
+                        <div class="form-group">
+                            <label >Jenis Kategori</label>
+                            <select name="jenis_id" id="jenis_id" class="form-control" required>
+                                <option value="">Pilih Jenis Kategori</option>
+                                @foreach ($products as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                                <span class="help-block with-errors"></span>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label >Nama Kategori</label>
+                            <select name="category_id" id="category_id" class="form-control" required>
+                                <option>Pilih Nama Kategori</option>
+                                <span class="help-block with-errors"></span>
+                                </select>
+
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ()
+                                    {
+                                            jQuery('select[name="jenis_id"]').on('change',function(){
+                                               var countryID = jQuery(this).val();
+                                               if(countryID)
+                                               {
+                                                  jQuery.ajax({
+                                                     url : 'dropdownlist/getstates/' +countryID,
+                                                     type : "GET",
+                                                     dataType : "json",
+                                                     success:function(data)
+                                                     {
+                                                        console.log(data);
+                                                        jQuery('select[name="category_id"]').empty();
+                                                        jQuery.each(data, function(key,value){
+                                                           $('select[name="category_id"]').append('<option id="category_id" name="category_id" value="'+ key +'">'+ value +'</option>');
+                                                        });
+                                                     }
+                                                  });
+                                               }
+                                               else
+                                               {
+                                                  $('select[name="category_id"]').empty();
+                                               }
+                                            });
+                                    });
+                                    </script>
+                            <span class="help-block with-errors"></span>
+                        </div>
                         <div class="form-group">
                             <label >Name</label>
                             <input type="text" class="form-control" id="nama" name="nama"  autofocus required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label >Price</label>
-                            <input type="text" class="form-control" id="harga" name="harga"   required>
                             <span class="help-block with-errors"></span>
                         </div>
 
@@ -33,23 +74,6 @@
                             <input type="text" class="form-control" id="qty" name="qty"   required>
                             <span class="help-block with-errors"></span>
                         </div>
-
-
-                        <div class="form-group">
-                            <label >Image</label>
-                            <input type="file" class="form-control" id="image" name="image" >
-                            <span class="help-block with-errors"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label >Category</label>
-                            {!! Form::select('category_id', $category, null, ['class' => 'form-control select', 'placeholder' => '-- Choose Category --', 'id' => 'category_id', 'required']) !!}
-                            <span class="help-block with-errors"></span>
-                        </div>
-
-
-
-
                     </div>
                     <!-- /.box-body -->
 

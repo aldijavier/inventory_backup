@@ -17,9 +17,35 @@
 
                     <div class="box-body">
                         <div class="form-group">
-                            <label >Name</label>
+                            <label >Kode Barang</label>
+                            <input type="text" class="form-control" id="kode_barang" name="kode_barang"  autofocus required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <label >Nama</label>
                             <input type="text" class="form-control" id="name" name="name"  autofocus required>
                             <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <label >Spek</label>
+                            <input type="text" class="form-control" id="spek" name="spek"  autofocus required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <label >Brand</label>
+                            <input type="text" class="form-control" id="brand" name="brand"  autofocus required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Asset Class<span style="color:red"> *</span></label>
+                                    <select name="category" id="category" class="form-control">
+                                        <option value="">- Choose Category -</option>
+                                        <option value="1"
+                                            {{ old('category') == "1" ? 'selected' : '' }}>
+                                            Asset</option>
+                                        <option value="2"
+                                            {{ old('category') == "2" ? 'selected' : '' }}>Consumable
+                                    </select>
                         </div>
                     </div>
                     <!-- /.box-body -->

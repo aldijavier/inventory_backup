@@ -30,7 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/apiCategories','CategoryController@apiCategories')->name('api.categories');
     Route::get('/exportCategoriesAll','CategoryController@exportCategoriesAll')->name('exportPDF.categoriesAll');
     Route::get('/exportCategoriesAllExcel','CategoryController@exportExcel')->name('exportExcel.categoriesAll');
-
+    
 
     Route::resource('customers','CustomerController');
     Route::get('/apiCustomers','CustomerController@apiCustomers')->name('api.customers');
@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('products','ProductController');
     Route::get('/apiProducts','ProductController@apiProducts')->name('api.products');
+    Route::get('dropdownlist/getstates/{id}','ProductController@getStates');
 
     Route::resource('productsOut','ProductKeluarController');
     Route::get('/apiProductsOut','ProductKeluarController@apiProductsOut')->name('api.productsOut');
@@ -64,5 +65,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/exportProductMasukAll','ProductMasukController@exportProductMasukAll')->name('exportPDF.productMasukAll');
     Route::get('/exportProductMasukAllExcel','ProductMasukController@exportExcel')->name('exportExcel.productMasukAll');
     Route::get('/exportProductMasuk/{id}','ProductMasukController@exportProductMasuk')->name('exportPDF.productMasuk');
+    Route::get('dropdownlist/getstates1/{id}','ProductMasukController@getStates1');
 });
 
