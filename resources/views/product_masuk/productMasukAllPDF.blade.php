@@ -39,29 +39,49 @@
         }
     </style>
 
-    <table id="product-masuk" width="100%">
-        <thead>
+<table id="product-masuk" width="100%">
+    <thead>
         <tr>
-            <td>ID</td>
-            <td>Product</td>
-            <td>Supplier</td>
-            <td>Quantity</td>
-            <td>Date</td>
+            <th>No</th>
+            <th>No. Form</th>
+            <th>No. Asset</th>
+            <th>PIC</th>
+            <th>Jenis Kategori</th>
+            <th>Nama Kategori</th>
+            <th>Nama Barang</th>
+            <th>Tanggal Terima</th>
+            <th>Lokasi Terima</th>
+            <th>PO</th>
+            <th>DO</th>
+            <th>Qty</th>
+            <th>Serial Number</th>
+            <th>Spesifikasi</th>
+            <th>Remarks</th>
         </tr>
-        </thead>
-        @foreach($product_masuk as $p)
-            <tbody>
-            <tr>
-                <td>{{ $p->id }}</td>
-                <td>{{ $p->product->nama }}</td>
-                <td>{{ $p->supplier->nama }}</td>
-                <td>{{ $p->qty }}</td>
-                <td>{{ $p->tanggal }}</td>
-            </tr>
-            </tbody>
-        @endforeach
+    </thead>
+    @foreach($product_masuk as $p)
+        <tbody>
+        <tr>
+            <td>{{ $p->id }}</td>
+            <td>{{ $p->nomor_form }}</td>
+            <td>{{ $p->nomor_asset }}</td>
+            <td>{{ $p->pic }}</td>
+            <td>{{ $p->product->category_id }}</td>
+            <td>{{ $p->nama_kategori }}</td>
+            <td>{{ $p->product->nama }}</td>
+            <td>{{ $p->tanggal_terima }}</td>
+            <td>{{ $p->lokasi_terima }}</td>
+            <td>{{ $p->po }}</td>
+            <td>{{ $p->do }}</td>
+            <td>{{ $p->qty }}</td>
+            <td>{{ $p->serial_number }}</td>
+            <td>{{ $p->spesifikasi }}</td>
+            <td>{{ $p->remarks }}</td> 
+        </tr>
+        </tbody>
+    @endforeach
 
-    </table>
+</table>
 
 
     {{--<!-- jQuery 3 -->--}}

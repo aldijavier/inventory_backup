@@ -66,5 +66,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/exportProductMasukAllExcel','ProductMasukController@exportExcel')->name('exportExcel.productMasukAll');
     Route::get('/exportProductMasuk/{id}','ProductMasukController@exportProductMasuk')->name('exportPDF.productMasuk');
     Route::get('dropdownlist/getstates1/{id}','ProductMasukController@getStates1');
+    Route::get('/product_masuk/detail/{id}', 'ProductMasukController@detail');
+    Route::get('books/{id}/download', 'ProductMasukController@download')->name('books.download');
+    Route::get('books/{id}/downloadDO', 'ProductMasukController@downloadDO')->name('books.downloadDO');
 });
 

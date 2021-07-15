@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use Milon\Barcode\DNS1D;
 use App\Exports\ExportProdukMasuk;
 use App\Product;
 use App\Product_Masuk;
@@ -12,6 +12,7 @@ use DB;
 use App\Location;
 use App\Category;
 use Illuminate\Http\Request;
+use App\ListCategory;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 
@@ -211,14 +212,76 @@ class ProductMasukController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'product_id'     => 'required',
-            'supplier_id'    => 'required',
-            'qty'            => 'required',
-            'tanggal'        => 'required'
+            // 'product_id'     => 'required',
+            // 'supplier_id'    => 'required',
+            // 'qty'            => 'required',
+            // 'tanggal'        => 'required'
         ]);
 
         $product_masuk = Product_Masuk::findOrFail($id);
-        $product_masuk->update($request->all());
+        $product = $product_masuk->update($request->all());
+
+        $created_date=Carbon::now();    
+        if($product){
+            // use within single line code
+            error_log('Some message here.');
+            $id=$product_masuk->id;
+
+            //upload file
+            if($request->file('po')){
+                $extension1 = $request->file('po')->getClientOriginalExtension();
+                $doc_name1 = $id.'po.'.$extension1;
+                $store1 = $request->file('po')->storeAs('attachment_po', $doc_name1);
+            }
+            else{
+                $doc_name1="";
+            }
+
+            if($request->file('do')){
+                $extension2 = $request->file('do')->getClientOriginalExtension();
+                $doc_name2 =  $id.'do.'.$extension2;
+                $store2 = $request->file('do')->storeAs('attachment_do', $doc_name2);
+            }
+            else{
+                $doc_name2="";
+            }
+           
+            $insert_filename=Product_Masuk::where('id',$id)
+                ->update([
+                'po' => $doc_name1,
+                'do' => $doc_name2,
+            ]);
+            
+            $period_ticket = $created_date->format('ymd');
+            //no urut akhir
+            $noticket="$id"."/"."FPB-NAP"."/"."$period_ticket";
+            
+            
+            $create_form=Product_Masuk::where('id',$id)
+                ->update([
+                'nomor_form' => $noticket
+            ]);
+
+            // dd($create_form);
+
+            $addNol = '';
+            if (strlen($id) == 1) {
+                $addNol = "000$id";
+            } elseif (strlen($id) == 2) {
+                $addNol = "00$id";
+            } elseif (strlen($id == 3)) {
+                $addNol = "0$id";
+            }
+
+            $no_asset = $created_date->format('Y');
+            //no urut akhir
+            $noticket1="122.100-"."$addNol"."/"."NAP"."/"."$no_asset";
+            
+            
+            $create_form1=Product_Masuk::where('id',$id)
+                ->update([
+                'nomor_asset' => $noticket1
+            ]);
 
         $product = Product::findOrFail($request->product_id);
         $product->qty += $request->qty;
@@ -228,6 +291,7 @@ class ProductMasukController extends Controller
             'success'    => true,
             'message'    => 'Product In Updated'
         ]);
+    }
     }
 
     /**
@@ -255,31 +319,30 @@ class ProductMasukController extends Controller
             ->addColumn('products_name', function ($product){
                 return $product->product->nama;
             })
-            ->addColumn('supplier_name', function ($product){
-                return $product->supplier->nama;
-            })
             ->addColumn('action', function($product){
-                return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a> ' .
+                return '<a href="/product_masuk/detail/'. $product->id .'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a>' .
                     '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                     '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a> ';
 
 
             })
-            ->rawColumns(['products_name','supplier_name','action'])->make(true);
+            ->rawColumns(['products_name','action'])->make(true);
 
     }
 
     public function exportProductMasukAll()
     {
         $product_masuk = Product_Masuk::all();
-        $pdf = PDF::loadView('product_masuk.productMasukAllPDF',compact('product_masuk'));
+        $productsz = ListCategory::all();
+        $pdf = PDF::loadView('product_masuk.productMasukAllPDF',compact('product_masuk', 'productsz'));
         return $pdf->download('product_masuk.pdf');
     }
 
     public function exportProductMasuk($id)
     {
         $product_masuk = Product_Masuk::findOrFail($id);
-        $pdf = PDF::loadView('product_masuk.productMasukPDF', compact('product_masuk'));
+        $productsz = ListCategory::all();
+        $pdf = PDF::loadView('product_masuk.productMasukPDF', compact('product_masuk', 'productsz'));
         return $pdf->download($product_masuk->id.'_product_masuk.pdf');
     }
 

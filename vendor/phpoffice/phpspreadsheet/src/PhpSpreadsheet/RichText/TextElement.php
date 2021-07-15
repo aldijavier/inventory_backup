@@ -35,9 +35,9 @@ class TextElement implements ITextElement
     /**
      * Set text.
      *
-     * @param $text string Text
+     * @param string $text Text
      *
-     * @return ITextElement
+     * @return $this
      */
     public function setText($text)
     {
@@ -49,7 +49,7 @@ class TextElement implements ITextElement
     /**
      * Get font.
      *
-     * @return \PhpOffice\PhpSpreadsheet\Style\Font
+     * @return null|\PhpOffice\PhpSpreadsheet\Style\Font
      */
     public function getFont()
     {

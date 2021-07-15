@@ -63,9 +63,9 @@
 
     <div class="box col-md-6">
 
-        <div class="box-header">
+        {{-- <div class="box-header">
             <h3 class="box-title">Export Invoice</h3>
-        </div>
+        </div> --}}
 
     {{--<div class="box-header">--}}
     {{--<a onclick="addForm()" class="btn btn-primary" >Add Products Out</a>--}}
@@ -74,7 +74,7 @@
     {{--</div>--}}
 
     <!-- /.box-header -->
-        <div class="box-body">
+        {{-- <div class="box-body">
             <table id="invoice" class="table table-striped">
                 <thead>
                 <tr>
@@ -88,7 +88,7 @@
                 </thead>
 
                 @foreach($invoice_data as $i)
-                    {{-- <tbody>
+                    <tbody>
                     <td>{{ $i->id }}</td>
                     <td>{{ $i->product->nama }}</td>
                     <td>{{ $i->supplier->nama }}</td>
@@ -97,10 +97,10 @@
                     <td>
                         <a href="{{ route('exportPDF.productMasuk', [ 'id' => $i->id ]) }}" class="btn btn-sm btn-danger">Export PDF</a>
                     </td>
-                    </tbody> --}}
+                    </tbody>
                 @endforeach
             </table>
-        </div>
+        </div> --}}
         <!-- /.box-body -->
     </div>
 
@@ -212,7 +212,7 @@
                 {data: 'id', name: 'id'},
                 {data: 'nomor_form', name: 'nomor_form'},
                 {data: 'nomor_asset', name: 'nomor_asset'},
-                {data: 'nama_barang', name: 'nama_barang'},
+                {data: 'products_name', name: 'products_name'},
                 {data: 'jenis_kategori', name: 'jenis_kategori',
                 "render": function (data, type, row) {
                         if ( row.jenis_kategori === '1') {
@@ -256,7 +256,7 @@
                     $('#id').val(data.id);
                     $('#nama_kategori').val(data.nama_kategori);
                     $('#jenis_kategori').val(data.jenis_kategori).change();
-                    $('#nama_barang').val(data.nama_barang);
+                    $('#product_id').val(data.product_id);
                     $('#po_string').val(data.po_string);
                     $('#tanggal_terima').val(data.tanggal_terima);
                     $('#lokasi_terima').val(data.lokasi_terima);
