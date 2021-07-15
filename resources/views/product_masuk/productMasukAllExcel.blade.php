@@ -66,12 +66,11 @@
             <td>{{ $p->nomor_form }}</td>
             <td>{{ $p->nomor_asset }}</td>
             <td>{{ $p->pic }}</td>
-            <td @if ($p->jenis_kategori === '1'){
-                return "Asset";
-            } else{
-                return "Consumable";
-            }
-            @endif>{{ $p->jenis_kategori}}</td>
+            <td> @if ($p->jenis_kategori === '1')
+                <span>Asset</span>
+            @else
+                <span>Consumable</span>
+            @endif</td>
             <td>{{ $p->nama_kategori }}</td>
             <td>{{ $p->product->nama }}</td>
             <td>{{ $p->tanggal_terima }}</td>
