@@ -71,16 +71,16 @@
                                                      success:function(data)
                                                      {
                                                         console.log(data);
-                                                        jQuery('select[name="nama_barang"]').empty();
+                                                        jQuery('select[name="product_id"]').empty();
                                                         jQuery.each(data, function(key,value){
-                                                           $('select[name="nama_barang"]').append('<option id="nama_barang" name="nama_barang" value="'+ key +'">'+ value +'</option>');
+                                                           $('select[name="product_id"]').append('<option id="product_id" name="product_id" value="'+ key +'">'+ value +'</option>');
                                                         });
                                                      }
                                                   });
                                                }
                                                else
                                                {
-                                                  $('select[name="nama_barang"]').empty();
+                                                  $('select[name="product_id"]').empty();
                                                }
                                             });
                                     });
@@ -89,7 +89,7 @@
                         </div>
                         <div class="form-group">
                             <label >Nama Barang</label>
-                            <select name="nama_barang" id="nama_barang" class="form-control" required>
+                            <select name="product_id" id="product_id" class="form-control" required>
                                 <option>Pilih Nama Kategori</option>
                                 <span class="help-block with-errors"></span>
                             </select>

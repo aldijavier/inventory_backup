@@ -13,7 +13,7 @@ use App\Location;
 use App\Category;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-
+use Carbon\Carbon;
 
 class ProductMasukController extends Controller
 {
@@ -100,9 +100,7 @@ class ProductMasukController extends Controller
     {
         $this->validate($request, [
             'product_id'     => 'required',
-            'supplier_id'    => 'required',
-            'qty'            => 'required',
-            'tanggal'        => 'required'
+            'qty'            => 'required'
         ]);
 
         $product = Product_Masuk::create($request->all());

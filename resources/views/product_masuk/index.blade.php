@@ -88,7 +88,7 @@
                 </thead>
 
                 @foreach($invoice_data as $i)
-                    <tbody>
+                    {{-- <tbody>
                     <td>{{ $i->id }}</td>
                     <td>{{ $i->product->nama }}</td>
                     <td>{{ $i->supplier->nama }}</td>
@@ -97,7 +97,7 @@
                     <td>
                         <a href="{{ route('exportPDF.productMasuk', [ 'id' => $i->id ]) }}" class="btn btn-sm btn-danger">Export PDF</a>
                     </td>
-                    </tbody>
+                    </tbody> --}}
                 @endforeach
             </table>
         </div>
