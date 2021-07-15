@@ -22,9 +22,15 @@
     <div class="box">
 
         <div class="box-header">
-            <h3 class="box-title">Data Products</h3>
+            <h3 class="box-title">Data List Products</h3>
 
-            <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Products</a>
+
+        </div>
+
+        <div class="box-header">
+            <a onclick="addForm()" class="btn btn-primary" >Add Products</a>
+            <a href="{{ route('exportPDF.productAll') }}" class="btn btn-danger">Export PDF</a>
+            <a href="{{ route('exportExcel.productAll') }}" class="btn btn-success">Export Excel</a>
         </div>
 
 

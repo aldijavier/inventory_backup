@@ -52,6 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('products','ProductController');
     Route::get('/apiProducts','ProductController@apiProducts')->name('api.products');
+    Route::get('/exportProductAll','ProductController@exportProductAll')->name('exportPDF.productAll');
+    Route::get('/exportProductAllExcel','ProductController@exportExcel')->name('exportExcel.productAll');
     Route::get('dropdownlist/getstates/{id}','ProductController@getStates');
 
     Route::resource('productsOut','ProductKeluarController');

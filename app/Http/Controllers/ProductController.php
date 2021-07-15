@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Exports\ExportProduct;
 use App\Product;
 use DB;
+use PDF;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -127,7 +129,7 @@ class ProductController extends Controller
 
         $this->validate($request , [
             'nama'          => 'required|string',
-            'harga'         => 'required',
+            // 'harga'         => 'required',
             'qty'           => 'required',
 //            'image'         => 'required',
             'category_id'   => 'required',
@@ -196,5 +198,26 @@ class ProductController extends Controller
             })
             ->rawColumns(['action'])->make(true);
 
+    }
+
+    public function exportProductAll()
+    {
+        $productsAll = Product::all();
+        // $productsz = ListCategory::all();
+        $pdf = PDF::loadView('products.productAllPDF',compact('productsAll'));
+        return $pdf->download('Products.pdf');
+    }
+
+    public function exportProduct($id)
+    {
+        $productsAll = Product::findOrFail($id);
+        $productsz = ListCategory::all();
+        $pdf = PDF::loadView('productsAll.productPDF', compact('productsAll', 'productsz'));
+        return $pdf->download($productsAll->id.'_productsAll.pdf');
+    }
+
+    public function exportExcel()
+    {
+        return (new ExportProduct)->download('product.xlsx');
     }
 }
