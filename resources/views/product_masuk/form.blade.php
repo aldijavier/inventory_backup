@@ -19,7 +19,7 @@
                         </div>
                         <div class="form-group">
                             <label >Jenis Kategori</label>
-                            <select name="jenis_kategori" id="jenis_kategori" class="form-control" required>
+                            <select name="jenis_kategori" id="jenis_kategori" class="form-control" required enable onChange="changeTextBox();">
                                 <option value="">Pilih Jenis Kategori</option>
                                 @foreach ($productsz as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
@@ -128,14 +128,25 @@
                         {{-- <input type="text" class="form-control" id="qty" name="qty" required> --}}
                         <div class="form-group">
                             <label >Quantity</label>
-                            <input type="number" id="quantity" class="form-control" name="qty" required><br>
-                            <button id="btn" type="button" style="margin-top:-40px;">Add</button>
-                            <span class="help-block with-errors"></span>
-                        </div>  
+                            <input type="number" id="qty" class="form-control" name="qty" readonly><br>
+                            {{-- <span class="help-block with-errors"></span> --}}
+                        </div>
+                        <script type="text/javascript">
+                            function changeTextBox() {
+                                        comp = document.getElementById('jenis_kategori');
+                                            if(comp.value == 1) {
+                                                document.getElementById('serial_number').disabled=true;
+                                                document.getElementById('qty').disabled=true;
+                                            } else if(comp.value == 2) {
+                                                document.getElementById('qty').disabled=false;
+                                                document.getElementById('qty').value = 1;
+                                            }
+                                    }
+                            </script>  
                         <div class="form-group" id="name-container-list">
                             <label >Serial Number</label>
-                            <div id="serial_number" name="serial_number"></div>
-                            <span class="help-block with-errors"></span>
+                            <input type="text" class="form-control" id="serial_number" name="serial_number"></textarea>
+                            {{-- <span class="help-block with-errors"></span> --}}
                         </div>
                         <div class="form-group">
                             <label >Spesifikasi</label>

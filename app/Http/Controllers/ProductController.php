@@ -67,7 +67,6 @@ class ProductController extends Controller
 
         $this->validate($request , [
             'nama'          => 'required|string',
-            'qty'           => 'required',
             'category_id'   => 'required',
         ]);
 
@@ -130,7 +129,7 @@ class ProductController extends Controller
         $this->validate($request , [
             'nama'          => 'required|string',
             // 'harga'         => 'required',
-            'qty'           => 'required',
+
 //            'image'         => 'required',
             'category_id'   => 'required',
         ]);

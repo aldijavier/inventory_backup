@@ -101,10 +101,11 @@ class ProductMasukController extends Controller
     {
         $this->validate($request, [
             'product_id'     => 'required',
-            'qty'            => 'required'
+            // 'qty'            => 'required'
         ]);
 
         $product = Product_Masuk::create($request->all());
+        $name = DB::table('categories')->where('name', $product->nama_kategori)->pluck('kode_barang');
 
         $created_date=Carbon::now();    
         if($product){
@@ -160,7 +161,7 @@ class ProductMasukController extends Controller
 
             $no_asset = $created_date->format('Y');
             //no urut akhir
-            $noticket1="122.100-"."$addNol"."/"."NAP"."/"."$no_asset";
+            $noticket1="122.100-"."$addNol"."/"."$name[0]"."/"."NAP"."/"."$no_asset";
             
             
             $create_form1=Product_Masuk::where('id',$id)

@@ -66,7 +66,7 @@
             <td>{{ $p->nomor_form }}</td>
             <td>{{ $p->nomor_asset }}</td>
             <td>{{ $p->pic }}</td>
-            <td> @if ($p->jenis_kategori === '1')
+            <td> @if ($p->jenis_kategori === 1)
                 <span>Asset</span>
             @else
                 <span>Consumable</span>

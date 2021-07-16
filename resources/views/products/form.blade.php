@@ -18,7 +18,7 @@
                     <div class="box-body">
                         <div class="form-group">
                             <label >Jenis Kategori</label>
-                            <select name="jenis_id" id="jenis_id" class="form-control" required>
+                            <select name="jenis_id" id="jenis_id" class="form-control" enable onChange="changeTextBox();">
                                 <option value="">Pilih Jenis Kategori</option>
                                 @foreach ($products as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
@@ -26,6 +26,16 @@
                                 <span class="help-block with-errors"></span>
                             </select>
                         </div>
+                        <script type="text/javascript">
+                            function changeTextBox() {
+                                        comp = document.getElementById('jenis_id');
+                                            if(comp.value == 1) {
+                                                document.getElementById('qty').disabled=true;
+                                            } else if(comp.value == 2) {
+                                                document.getElementById('qty').disabled=false;
+                                            }
+                                    }
+                            </script>
                         <div class="form-group">
                             <label >Nama Kategori</label>
                             <select name="category_id" id="category_id" class="form-control" required>
@@ -71,7 +81,7 @@
 
                         <div class="form-group">
                             <label >Quantity</label>
-                            <input type="text" class="form-control" id="qty" name="qty"   required>
+                            <input type="text" class="form-control" id="qty" name="qty">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
