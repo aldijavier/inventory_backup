@@ -10,6 +10,10 @@ use App\Product_Keluar;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use PDF;
+use App\Departement;
+use DB;
+use Carbon\Carbon;
+use App\Location;
 
 
 class ProductKeluarController extends Controller
@@ -25,16 +29,34 @@ class ProductKeluarController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('nama','ASC')
+        $categoryz = DB::table('categories')
             ->get()
-            ->pluck('nama','id');
+            ->pluck('name','id');
+        
+        $productsz = DB::table('list_categories')->pluck("name","id");
+
+        $category = Category::orderBy('name','ASC')
+            ->get()
+            ->pluck('name','id');
+
+        // $products = Product::orderBy('nama','ASC')
+        //     ->get()
+        //     ->pluck('nama','id');
+        
+        $location = Location::orderBy('lokasi')
+            ->get()
+            ->pluck('lokasi', 'lokasi');
+        
+        $departements = Departement::orderBy('nama_departement')
+        ->get()
+        ->pluck('nama_departement', 'id');
 
         $customers = Customer::orderBy('nama','ASC')
             ->get()
             ->pluck('nama','id');
 
         $invoice_data = Product_Keluar::all();
-        return view('product_keluar.index', compact('products','customers', 'invoice_data'));
+        return view('product_keluar.index', compact('customers', 'invoice_data', 'categoryz', 'location', 'productsz', 'category', 'departements'));
     }
 
     /**
@@ -53,16 +75,86 @@ class ProductKeluarController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function download($uuid)
+    {
+        $book = Product_Masuk::where('id', $uuid)->firstOrFail();
+        $pathToFile = public_path('attachment_po'. '/' . $book->po);
+        return response()->download($pathToFile);
+    }
+
+    public function downloadDO($uuid)
+    {
+        $book = Product_Masuk::where('id', $uuid)->firstOrFail();
+        $pathToFile = public_path('attachment_do'. '/' . $book->do);
+        return response()->download($pathToFile);
+    }
+
+    public function getStates2($id) 
+    {        
+        $states = DB::table("user_demands")->where("dept",$id)->pluck("nama_karyawan", "id");
+        return json_encode($states);
+    }
+
+    public function detail($id)
+    {
+        $title = 'Detail Produk Masuk';
+        $dt = Product_Masuk::find($id);
+        $invoice_data = Product_Masuk::all();
+
+        return view('product_masuk.detail', compact('title', 'dt', 'invoice_data'));
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
-           'product_id'     => 'required',
-           'customer_id'    => 'required',
-           'qty'            => 'required',
-           'tanggal'           => 'required'
+        //    'product_id'     => 'required',
+        //    'customer_id'    => 'required',
+        //    'qty'            => 'required',
+        //    'tanggal'           => 'required'
         ]);
 
-        Product_Keluar::create($request->all());
+        $product = Product_Keluar::create($request->all());
+        $created_date=Carbon::now(); 
+        if($product){
+            // use within single line code
+            error_log('Some message here.');
+            $id=$product->id;
+
+            //upload file
+            if($request->file('spk')){
+                $extension1 = $request->file('spk')->getClientOriginalExtension();
+                $doc_name1 = $id.'spk.'.$extension1;
+                $store1 = $request->file('spk')->storeAs('spk', $doc_name1);
+            }
+            else{
+                $doc_name1="";
+            }
+
+            if($request->file('pform')){
+                $extension2 = $request->file('pform')->getClientOriginalExtension();
+                $doc_name2 =  $id.'pform.'.$extension2;
+                $store2 = $request->file('pform')->storeAs('project_form', $doc_name2);
+            }
+            else{
+                $doc_name2="";
+            }
+           
+            $insert_filename=Product_Keluar::where('id',$id)
+                ->update([
+                'spk' => $doc_name1,
+                'pform' => $doc_name2,
+            ]);
+            
+            $period_ticket = $created_date->format('ymd');
+            //no urut akhir
+            $noticket="$id"."/"."FPB-NAP"."/"."$period_ticket";
+            
+            
+            $create_form=Product_Keluar::where('id',$id)
+                ->update([
+                'nomor_form' => $noticket
+            ]);
+        
 
         $product = Product::findOrFail($request->product_id);
         $product->qty -= $request->qty;
@@ -72,7 +164,7 @@ class ProductKeluarController extends Controller
             'success'    => true,
             'message'    => 'Products Out Created'
         ]);
-
+    }
     }
 
     /**

@@ -8,7 +8,9 @@ class Product_Keluar extends Model
 {
     protected $table = 'product_keluar';
 
-    protected $fillable = ['product_id','customer_id','qty','tanggal'];
+    protected $fillable = ['nomor_form', 'pic','jenis_kategori','nama_kategori',
+    'product_id','tanggal_keluar','lokasi_pengambilan', 'lokasi_pemasangan', 'departement', 'departement_pic',
+    'spk', 'pform', 'qty','serial_number','remarks'];
 
     protected $hidden = ['created_at','updated_at'];
 
@@ -17,8 +19,8 @@ class Product_Keluar extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
+    // public function customer()
+    // {
+    //     return $this->belongsTo(Customer::class);
+    // }
 }

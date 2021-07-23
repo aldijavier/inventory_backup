@@ -114,7 +114,19 @@
                 },
                 {data: 'category_id', name: 'category_id'},
                 {data: 'nama', name: 'nama'},
-                {data: 'qty', name: 'qty'},
+                {data: 'qty', name: 'qty',
+                "render": function (data, type, row) {
+                        if ( row.qty === 0) {
+                            return 'Tidak ada quantity';
+                        }
+                        else if(row.qty === null){
+                            return 'Tidak ada quantity'
+                        }
+                        else{
+                            return data;
+                        }
+                    }
+                },
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

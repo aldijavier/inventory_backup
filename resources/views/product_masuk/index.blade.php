@@ -49,8 +49,9 @@
                     <th>PO</th>
                     <th>Tanggal Terima</th>
                     <th>Lokasi Terima</th>
-                    <th>Qty</th>
+                    {{-- <th>Qty</th> --}}
                     <th>PIC</th>
+                    {{-- <th>Serial Number</th> --}}
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -227,8 +228,21 @@
                 {data: 'po_string', name: 'po_string'},
                 {data: 'tanggal_terima', name: 'Tanggal Terima'},
                 {data: 'lokasi_terima', name: 'Lokasi Terima'},
-                {data: 'qty', name: 'qty'},
+                // {data: 'qty', name: 'qty',
+                // "render": function (data, type, row) {
+                //         if ( row.qty === 0) {
+                //             return 'Tidak ada quantity';
+                //         }
+                //         else if(row.qty === null){
+                //             return 'Tidak ada quantity'
+                //         }
+                //         else{
+                //             return data;
+                //         }
+                //     }
+                // },
                 {data: 'pic', name: 'pic'},
+                // {data: 'serial_number', name: 'serial_number'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
