@@ -35,10 +35,15 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Products</th>
-                    <th>Customer</th>
-                    <th>QTY</th>
-                    <th>Tanggal Pembelian</th>
+                    <th>Nomor Form</th>
+                    <th>Jenis Kategori</th>
+                    <th>Nama Barang</th>
+                    <th>Tanggal Keluar</th>
+                    <th>Lokasi Pengambilan</th>
+                    <th>Lokasi Pemasangan</th>
+                    <th>Departement PIC</th>
+                    <th>Serial Number</th>
+                    <th>PIC</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -52,9 +57,9 @@
 
     <div class="box col-md-6">
 
-        <div class="box-header">
+        {{-- <div class="box-header">
             <h3 class="box-title">Export Invoice</h3>
-        </div>
+        </div> --}}
 
         {{--<div class="box-header">--}}
             {{--<a onclick="addForm()" class="btn btn-primary" >Add Products Out</a>--}}
@@ -63,7 +68,7 @@
         {{--</div>--}}
 
         <!-- /.box-header -->
-        <div class="box-body">
+        {{-- <div class="box-body">
             <table id="invoice" class="table table-striped">
                 <thead>
                 <tr>
@@ -89,7 +94,7 @@
                     </tbody>
                 @endforeach
             </table>
-        </div>
+        </div> --}}
         <!-- /.box-body -->
     </div>
 
@@ -164,10 +169,24 @@
             ajax: "{{ route('api.productsOut') }}",
             columns: [
                 {data: 'id', name: 'id'},
+                {data: 'nomor_form', name: 'nomor_form'},
+                {data: 'jenis_kategori', name: 'jenis_kategori',
+                "render": function (data, type, row) {
+                        if ( row.jenis_kategori === '1') {
+                            return 'Asset';
+                        }
+                        else{
+                            return 'Consumable';
+                        }
+                    }
+                },
                 {data: 'products_name', name: 'products_name'},
-                {data: 'customer_name', name: 'customer_name'},
-                {data: 'qty', name: 'qty'},
-                {data: 'tanggal', name: 'tanggal'},
+                {data: 'tanggal_keluar', name: 'tanggal_keluar'},
+                {data: 'lokasi_pengambilan', name: 'lokasi_pengambilan'},
+                {data: 'lokasi_pemasangan', name: 'lokasi_pemasangan'},
+                {data: 'departement_pic', name: 'departement_pic'},
+                {data: 'serial_number', name: 'serial_number'},
+                {data: 'pic', name: 'pic'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

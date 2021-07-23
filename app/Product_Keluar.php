@@ -19,6 +19,11 @@ class Product_Keluar extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function pic()
+    {
+        return $this->belongsTo(UserDemand::class);
+    }
+
     // public function customer()
     // {
     //     return $this->belongsTo(Customer::class);

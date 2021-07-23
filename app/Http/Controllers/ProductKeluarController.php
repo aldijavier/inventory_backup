@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use PDF;
 use App\Departement;
+use App\UserDemand;
 use DB;
 use Carbon\Carbon;
 use App\Location;
@@ -47,16 +48,21 @@ class ProductKeluarController extends Controller
             ->get()
             ->pluck('lokasi', 'lokasi');
         
-        $departements = Departement::orderBy('nama_departement')
-        ->get()
-        ->pluck('nama_departement', 'id');
+        $departements = DB::table('departements')->pluck("nama_departement","id");
 
-        $customers = Customer::orderBy('nama','ASC')
+        $departementspic = DB::table('user_demands')
             ->get()
-            ->pluck('nama','id');
+            ->pluck('nama_karyawan','id');
+
+        $deptpic = UserDemand::orderBy('nama_karyawan','ASC')
+        ->get()
+        ->pluck('nama_karyawan','id');
+        // $customers = Customer::orderBy('nama','ASC')
+        //     ->get()
+        //     ->pluck('nama','id');
 
         $invoice_data = Product_Keluar::all();
-        return view('product_keluar.index', compact('customers', 'invoice_data', 'categoryz', 'location', 'productsz', 'category', 'departements'));
+        return view('product_keluar.index', compact('invoice_data', 'categoryz', 'location', 'productsz', 'category', 'departements', 'departementspic', 'deptpic'));
     }
 
     /**
@@ -77,31 +83,31 @@ class ProductKeluarController extends Controller
      */
     public function download($uuid)
     {
-        $book = Product_Masuk::where('id', $uuid)->firstOrFail();
-        $pathToFile = public_path('attachment_po'. '/' . $book->po);
+        $book = Product_Keluar::where('id', $uuid)->firstOrFail();
+        $pathToFile = public_path('spk'. '/' . $book->spk);
         return response()->download($pathToFile);
     }
 
     public function downloadDO($uuid)
     {
-        $book = Product_Masuk::where('id', $uuid)->firstOrFail();
-        $pathToFile = public_path('attachment_do'. '/' . $book->do);
+        $book = Product_Keluar::where('id', $uuid)->firstOrFail();
+        $pathToFile = public_path('project_form'. '/' . $book->pform);
         return response()->download($pathToFile);
     }
 
     public function getStates2($id) 
     {        
-        $states = DB::table("user_demands")->where("dept",$id)->pluck("nama_karyawan", "id");
+        $states = DB::table("user_demands")->where("dept",$id)->pluck("nama_karyawan", "nama_karyawan");
         return json_encode($states);
     }
 
     public function detail($id)
     {
         $title = 'Detail Produk Masuk';
-        $dt = Product_Masuk::find($id);
-        $invoice_data = Product_Masuk::all();
+        $dt = Product_Keluar::find($id);
+        $invoice_data = Product_Keluar::all();
 
-        return view('product_masuk.detail', compact('title', 'dt', 'invoice_data'));
+        return view('product_keluar.detail', compact('title', 'dt', 'invoice_data'));
     }
 
     public function store(Request $request)
@@ -239,20 +245,21 @@ class ProductKeluarController extends Controller
 
     public function apiProductsOut(){
         $product = Product_Keluar::all();
+        $pic = UserDemand::all();
 
         return Datatables::of($product)
             ->addColumn('products_name', function ($product){
                 return $product->product->nama;
             })
-            ->addColumn('customer_name', function ($product){
-                return $product->customer->nama;
-            })
+            // ->addColumn('dept_pic', function ($pic){
+            //     return $pic->product->nama_karyawan;
+            // })
             ->addColumn('action', function($product){
-                return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a> ' .
+                return '<a href="/product_keluar/detail/'. $product->id .'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a>' .
                     '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
                     '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
             })
-            ->rawColumns(['products_name','customer_name','action'])->make(true);
+            ->rawColumns(['products_name','action'])->make(true);
 
     }
 
