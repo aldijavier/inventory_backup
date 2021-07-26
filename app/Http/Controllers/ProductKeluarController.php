@@ -206,14 +206,55 @@ class ProductKeluarController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'product_id'     => 'required',
-            'customer_id'    => 'required',
-            'qty'            => 'required',
-            'tanggal'           => 'required'
+            // 'product_id'     => 'required',
+            // 'customer_id'    => 'required',
+            // 'qty'            => 'required',
+            // 'tanggal'           => 'required'
         ]);
 
         $product_keluar = Product_Keluar::findOrFail($id);
-        $product_keluar->update($request->all());
+        $product = $product_keluar->update($request->all());
+
+        $created_date=Carbon::now(); 
+        if($product){
+            // use within single line code
+            error_log('Some message here.');
+            $id=$product_keluar->id;
+
+            //upload file
+            if($request->file('spk')){
+                $extension1 = $request->file('spk')->getClientOriginalExtension();
+                $doc_name1 = $id.'spk.'.$extension1;
+                $store1 = $request->file('spk')->storeAs('spk', $doc_name1);
+            }
+            else{
+                $doc_name1="";
+            }
+
+            if($request->file('pform')){
+                $extension2 = $request->file('pform')->getClientOriginalExtension();
+                $doc_name2 =  $id.'pform.'.$extension2;
+                $store2 = $request->file('pform')->storeAs('project_form', $doc_name2);
+            }
+            else{
+                $doc_name2="";
+            }
+           
+            $insert_filename=Product_Keluar::where('id',$id)
+                ->update([
+                'spk' => $doc_name1,
+                'pform' => $doc_name2,
+            ]);
+            
+            $period_ticket = $created_date->format('ymd');
+            //no urut akhir
+            $noticket="$id"."/"."FPB-NAP"."/"."$period_ticket";
+            
+            
+            $create_form=Product_Keluar::where('id',$id)
+                ->update([
+                'nomor_form' => $noticket
+            ]);
 
         $product = Product::findOrFail($request->product_id);
         $product->qty -= $request->qty;
@@ -224,6 +265,7 @@ class ProductKeluarController extends Controller
             'message'    => 'Product Out Updated'
         ]);
     }
+}
 
     /**
      * Remove the specified resource from storage.

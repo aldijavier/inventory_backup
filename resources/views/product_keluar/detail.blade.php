@@ -75,12 +75,12 @@
                             <tr>
                                 <th>SPK</th>
                                 <th>:</th>
-                                <td><a href="{{ route('books.download', $dt->id) }}">{{ $dt->po }}</a></td>
+                                <td><a href="{{ route('books.downloadspk', $dt->id) }}">{{ $dt->spk }}</a></td>
                             </tr>
                             <tr>
                                 <th>Project Form</th>
                                 <th>:</th>
-                                <td><a href="{{ route('books.downloadDO', $dt->id) }}">{{ $dt->do }}</a></td>
+                                <td><a href="{{ route('books.downloadpfrom', $dt->id) }}">{{ $dt->pform }}</a></td>
                             </tr>
                             <tr>
                                 <th>Quantity</th>

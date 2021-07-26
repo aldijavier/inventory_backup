@@ -212,10 +212,17 @@
                     $('.modal-title').text('Edit Products');
 
                     $('#id').val(data.id);
+                    $('#jenis_kategori').val(data.jenis_kategori).change();
+                    $('#nama_kategori').val(data.nama_kategori);
                     $('#product_id').val(data.product_id);
-                    $('#customer_id').val(data.customer_id);
+                    $('#lokasi_pengambilan').val(data.lokasi_pengambilan);
+                    $('#tanggal_keluar').val(data.tanggal_keluar);
+                    $('#lokasi_pemasangan').val(data.lokasi_pemasangan);
+                    $('#departement').val(data.departement).change();
+                    $('#departement_pic').val(data.departement_pic);
                     $('#qty').val(data.qty);
-                    $('#tanggal').val(data.tanggal);
+                    $('#serial_number').val(data.serial_number);
+                    $('#remarks').val(data.remarks);
                 },
                 error : function() {
                     alert("Nothing Data");

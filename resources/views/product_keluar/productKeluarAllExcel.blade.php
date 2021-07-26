@@ -42,21 +42,47 @@
 <table id="product-masuk" width="100%">
     <thead>
     <tr>
-        <td>ID</td>
-        <td>Product</td>
-        <td>Customer</td>
-        <td>Quantity</td>
-        <td>Date</td>
+        <th>ID</th>
+        <th>Nomor Form</th>
+        <th>Jenis Kategori</th>
+        <th>Nama Kategori</th>
+        <th>Nama Barang</th>
+        <th>Tanggal Keluar</th>
+        <th>Lokasi Pengambilan</th>
+        <th>Lokasi Pemasangan</th>
+        <th>Departement</th>
+        <th>Departement PIC</th>
+        <th>SPK</th>
+        <th>Project Form</th>
+        <th>Quantity</th>
+        <th>Serial Number</th>
+        <th>Remarks</th>
+        <th>PIC</th>
     </tr>
     </thead>
     @foreach($product_keluar as $p)
         <tbody>
         <tr>
             <td>{{ $p->id }}</td>
+            <td>{{ $p->nomor_form }}</td>
+            <td> @if ($p->jenis_kategori === 1)
+                <span>Asset</span>
+            @else
+                <span>Consumable</span>
+            @endif</td>
+            <td>{{ $p->nama_kategori }}</td>
             <td>{{ $p->product->nama }}</td>
-            <td>{{ $p->customer->nama }}</td>
+            <td>{{ $p->tanggal_keluar }}</td>
+            <td>{{ $p->lokasi_pengambilan }}</td>
+            <td>{{ $p->lokasi_pemasangan }}</td>
+            <td>{{ $p->departement }}</td>
+            <td>{{ $p->departement_pic }}</td>
+            <td>{{ $p->spk }}</td>
+            <td>{{ $p->pform }}</td>
             <td>{{ $p->qty }}</td>
-            <td>{{ $p->tanggal }}</td>
+            <td>{{ $p->serial_number }}</td>
+            <td>{{ $p->remarks }}</td>
+            <td>{{ $p->pic }}</td>
         </tr>
         </tbody>
     @endforeach

@@ -128,18 +128,19 @@
                         {{-- <input type="text" class="form-control" id="qty" name="qty" required> --}}
                         <div class="form-group">
                             <label >Quantity</label>
-                            <input type="number" id="qty" class="form-control" name="qty" readonly><br>
+                            <input type="number" id="qty" class="form-control" name="qty"><br>
                             {{-- <span class="help-block with-errors"></span> --}}
                         </div>
                         <script type="text/javascript">
                             function changeTextBox() {
                                         comp = document.getElementById('jenis_kategori');
                                             if(comp.value == 1) {
-                                                document.getElementById('serial_number').disabled=true;
+                                                document.getElementById('serial_number').disabled=false;
                                                 document.getElementById('qty').disabled=true;
+                                                document.getElementById('qty').value=1;
                                             } else if(comp.value == 2) {
                                                 document.getElementById('qty').disabled=false;
-                                                document.getElementById('qty').value = 1;
+                                                document.getElementById('serial_number').disabled=true;
                                             }
                                     }
                             </script>  

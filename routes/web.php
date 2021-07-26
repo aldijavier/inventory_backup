@@ -63,8 +63,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/exportProductKeluar/{id}','ProductKeluarController@exportProductKeluar')->name('exportPDF.productKeluar');
     Route::get('dropdownlist/getstates2/{id}','ProductKeluarController@getStates2');
     Route::get('/product_keluar/detail/{id}', 'ProductKeluarController@detail');
-    Route::get('books/{id}/download', 'ProductKeluarController@download')->name('books.download');
-    Route::get('books/{id}/downloadDO', 'ProductKeluarController@downloadDO')->name('books.downloadDO');
+    Route::get('books/{id}/downloadspk', 'ProductKeluarController@download')->name('books.downloadspk');
+    Route::get('books/{id}/downloadpfrom', 'ProductKeluarController@downloadDO')->name('books.downloadpfrom');
 
 
     Route::resource('productsIn','ProductMasukController');
