@@ -57,12 +57,19 @@ class ProductKeluarController extends Controller
         $deptpic = UserDemand::orderBy('nama_karyawan','ASC')
         ->get()
         ->pluck('nama_karyawan','id');
+
+        $productawal = Product::orderBy('nama','ASC')
+        ->get()
+        ->pluck('nama','id');
         // $customers = Customer::orderBy('nama','ASC')
         //     ->get()
         //     ->pluck('nama','id');
+        $productakhir = DB::table('products')
+            ->get()
+            ->pluck('nama','id');
 
         $invoice_data = Product_Keluar::all();
-        return view('product_keluar.index', compact('invoice_data', 'categoryz', 'location', 'productsz', 'category', 'departements', 'departementspic', 'deptpic'));
+        return view('product_keluar.index', compact('invoice_data', 'categoryz', 'location', 'productsz', 'category', 'departements', 'departementspic', 'deptpic', 'productawal'));
     }
 
     /**
@@ -119,11 +126,26 @@ class ProductKeluarController extends Controller
         //    'tanggal'           => 'required'
         ]);
 
-        $product = Product_Keluar::create($request->all());
-        $created_date=Carbon::now(); 
+        // Product_Masuk::create($request->all());
+        $product=Product_Keluar::create([
+            'pic' => $request->pic,
+            'jenis_kategori' => $request->jenis_kategori,
+            'nama_kategori' => $request->nama_kategori,
+            'product_id' => $request->product_id,
+            'lokasi_pengambilan' => $request->lokasi_pengambilan,
+            'tanggal_keluar' => $request->tanggal_keluar,
+            'lokasi_pemasangan' => $request->lokasi_pemasangan,
+            'departement' => $request->departement,
+            'departement_pic' => $request->departement_pic,
+            'qty' => $request->qty,
+            'serial_number' => $request->serial_number,
+            'remarks' => $request->remarks,
+        ]);
+
         if($product){
-            // use within single line code
-            error_log('Some message here.');
+            $created_date=Carbon::now(); 
+        // use within single line code
+            // error_log('Some message here.');
             $id=$product->id;
 
             //upload file
@@ -131,11 +153,10 @@ class ProductKeluarController extends Controller
                 $extension1 = $request->file('spk')->getClientOriginalExtension();
                 $doc_name1 = $id.'spk.'.$extension1;
                 $store1 = $request->file('spk')->storeAs('spk', $doc_name1);
-            }
-            else{
+            } else{
                 $doc_name1="";
             }
-
+                
             if($request->file('pform')){
                 $extension2 = $request->file('pform')->getClientOriginalExtension();
                 $doc_name2 =  $id.'pform.'.$extension2;
@@ -144,43 +165,39 @@ class ProductKeluarController extends Controller
             else{
                 $doc_name2="";
             }
-           
+                
             $insert_filename=Product_Keluar::where('id',$id)
-                ->update([
+            ->update([
                 'spk' => $doc_name1,
                 'pform' => $doc_name2,
             ]);
-            
+                
             $period_ticket = $created_date->format('ymd');
             //no urut akhir
             $noticket="$id"."/"."FPB-NAP"."/"."$period_ticket";
             
             
             $create_form=Product_Keluar::where('id',$id)
-                ->update([
+            ->update([
                 'nomor_form' => $noticket
             ]);
-        
-
-        $product = Product::findOrFail($request->product_id);
-        if($product->qty >= 1) {
-            $product->qty -= $request->qty;
-            $product->save();
-            return response()->json([
-                'success'    => true,
-                'message'    => 'Products Out Created'
-            ]);
-        } else{
-            $returnData = array(
-                'status' => 'error',
-                'message' => 'An error occurred!'
-            );
-            return Response::json($returnData, 500);
+            
+                
+            // $product = Product_Keluar::create($request->all());
+            $product = Product::findOrFail($request->product_id);
+            if($product->qty >= $request->qty) {
+                $product->qty -= $request->qty;
+                $product->save();
+                return response()->json([
+                    'success'    => true,
+                    'message'    => 'Products Out Created'
+                ]);
+            } else if($product->qty <= $request->qty){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
         }
-
     }
-    }
-
+        
     /**
      * Display the specified resource.
      *
