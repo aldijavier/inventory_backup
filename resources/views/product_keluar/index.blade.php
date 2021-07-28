@@ -293,7 +293,7 @@
                         },
                         error : function(data){
                             swal({
-                                title: 'Oops...',
+                                title: 'Product out of Stock',
                                 text: data.message,
                                 type: 'error',
                                 timer: '1500'

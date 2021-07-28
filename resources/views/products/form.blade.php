@@ -30,7 +30,7 @@
                             function changeTextBox() {
                                         comp = document.getElementById('jenis_id');
                                             if(comp.value == 1) {
-                                                document.getElementById('qty').disabled=true;
+                                                document.getElementById('qty').disabled=false;
                                             } else if(comp.value == 2) {
                                                 document.getElementById('qty').disabled=false;
                                             }

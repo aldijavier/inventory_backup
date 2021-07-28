@@ -221,7 +221,7 @@
 
                         <div class="form-group">
                             <label >Serial Number</label>
-                            <input type="text" class="form-control" id="serial_number" name="serial_number" required>
+                            <input type="text" class="form-control" id="serial_number" name="serial_number">
                             <span class="help-block with-errors"></span>
                         </div>
 

@@ -163,13 +163,21 @@ class ProductKeluarController extends Controller
         
 
         $product = Product::findOrFail($request->product_id);
-        $product->qty -= $request->qty;
-        $product->save();
+        if($product->qty >= 1) {
+            $product->qty -= $request->qty;
+            $product->save();
+            return response()->json([
+                'success'    => true,
+                'message'    => 'Products Out Created'
+            ]);
+        } else{
+            $returnData = array(
+                'status' => 'error',
+                'message' => 'An error occurred!'
+            );
+            return Response::json($returnData, 500);
+        }
 
-        return response()->json([
-            'success'    => true,
-            'message'    => 'Products Out Created'
-        ]);
     }
     }
 
