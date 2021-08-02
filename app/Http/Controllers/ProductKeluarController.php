@@ -107,7 +107,7 @@ class ProductKeluarController extends Controller
         // $states = \DB::select("select * from products where qty >= 1 and jenis_id = 2");        
         $states = DB::table("products")
         ->where("category_id", $id)
-        ->Where('qty', '>=', 1)
+        ->Where('qty', '>', 0)
         ->pluck("nama", "id");
         return json_encode($states);
     }
