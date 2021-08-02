@@ -48,6 +48,7 @@ class ProductMasukController extends Controller
             ->pluck('lokasi', 'lokasi');
 
         $invoice_data = Product_Masuk::all();
+        
         return view('product_masuk.index', compact('invoice_data', 'categoryz', 'location', 'productsz', 'category'));
     }
 
@@ -96,6 +97,25 @@ class ProductMasukController extends Controller
 
         return view('product_masuk.detail', compact('title', 'dt', 'invoice_data'));
     }
+
+    public function get_custom_posts(){
+        $postsQuery = Product_Masuk::query();
+ 
+        $start_date = (!empty($_GET["start_date"])) ? ($_GET["start_date"]) : ('');
+        $end_date = (!empty($_GET["end_date"])) ? ($_GET["end_date"]) : ('');
+ 
+        if($start_date && $end_date){
+    
+         $start_date = date('Y-m-d', strtotime($start_date));
+         $end_date = date('Y-m-d', strtotime($end_date));
+         
+         $postsQuery->whereRaw("date(product_masuk.created_at) >= '" . $start_date . "' AND date(product_masuk.created_at) <= '" . $end_date . "'");
+        }
+        $posts = $postsQuery->select('*');
+        return datatables()->of($posts)
+            ->make(true);
+    }
+
 
     public function store(Request $request)
     {
@@ -149,7 +169,7 @@ class ProductMasukController extends Controller
             ]);
 
             // dd($create_form);
-
+            if($request->jenis_kategori == 1){
             $addNol = '';
             if (strlen($id) == 1) {
                 $addNol = "000$id";
@@ -169,14 +189,24 @@ class ProductMasukController extends Controller
                 'nomor_asset' => $noticket1
             ]);
 
-        $product = Product::findOrFail($request->product_id);
-        $product->qty += $request->qty;
-        $product->save();
+            $product = Product::findOrFail($request->product_id);
+            $product->qty += $request->qty;
+            $product->save();
 
-        return response()->json([
-            'success'    => true,
-            'message'    => 'Products In Created'
-        ]);
+            return response()->json([
+                'success'    => true,
+                'message'    => 'Products In Created'
+            ]);
+        } else if($request->jenis_kategori == 2){
+            $product = Product::findOrFail($request->product_id);
+            $product->qty += $request->qty;
+            $product->save();
+
+            return response()->json([
+                'success'    => true,
+                'message'    => 'Products In Created'
+            ]);
+        }
     }
     }
 
@@ -320,14 +350,16 @@ class ProductMasukController extends Controller
             ->addColumn('products_name', function ($product){
                 return $product->product->nama;
             })
+            ->editColumn('jenis_kategori', function ($model) {
+                return $model->jenis_kategori == 1 ? 'Asset' : 'Consumable';
+            })
             ->addColumn('action', function($product){
-                return '<a href="/product_masuk/detail/'. $product->id .'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a>' .
-                    '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
-                    '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a> ';
-
+                return '<a href="/product_masuk/detail/'. $product->id .'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>' .
+                    '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
+                    '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a> ';
 
             })
-            ->rawColumns(['products_name','action'])->make(true);
+            ->rawColumns(['products_name', 'jenis_kategori', 'action'])->make(true);
 
     }
 

@@ -31,9 +31,6 @@
             <a href="{{ route('exportExcel.productMasukAll') }}" class="btn btn-success">Export Excel</a>
         </div>
 
-
-
-
         <!-- /.box-header -->
         <div class="box-body">
             <div class="table-responsive">
@@ -44,6 +41,7 @@
                     <th>No. Form</th>
                     <th>No. Asset</th>
                     <th>Nama Barang</th>
+                    <th>Serial Number</th>
                     <th>Jenis Kategori</th>
                     <th>Nama Kategori</th>
                     <th>PO</th>
@@ -55,7 +53,8 @@
                     <th>Action</th>
                 </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                </tbody>
             </table>
         </div>
         </div>
@@ -214,20 +213,12 @@
                 {data: 'nomor_form', name: 'nomor_form'},
                 {data: 'nomor_asset', name: 'nomor_asset'},
                 {data: 'products_name', name: 'products_name'},
-                {data: 'jenis_kategori', name: 'jenis_kategori',
-                "render": function (data, type, row) {
-                        if ( row.jenis_kategori === '1') {
-                            return 'Asset';
-                        }
-                        else{
-                            return 'Consumable';
-                        }
-                    }
-                },
+                {data: 'serial_number', name: 'serial_number'},
+                {data: 'jenis_kategori', name: 'jenis_kategori'},
                 {data: 'nama_kategori', name: 'nama_kategori'},
                 {data: 'po_string', name: 'po_string'},
-                {data: 'tanggal_terima', name: 'Tanggal Terima'},
-                {data: 'lokasi_terima', name: 'Lokasi Terima'},
+                {data: 'tanggal_terima', name: 'tanggal_terima'},
+                {data: 'lokasi_terima', name: 'lokasi_terima'},
                 // {data: 'qty', name: 'qty',
                 // "render": function (data, type, row) {
                 //         if ( row.qty === 0) {

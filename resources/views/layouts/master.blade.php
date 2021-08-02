@@ -87,6 +87,31 @@ desired effect
                 <ul class="nav navbar-nav">
                     <!-- Messages: style can be found in dropdown.less-->
                     <!-- User Account Menu -->
+                    <?php
+                        $ambildatastock = \DB::select("select * from products where qty < 1 and jenis_id = 2");
+                    ?>
+                    <li class="dropdown user user-menu">
+                        <!-- Menu Toggle Button -->
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning">{{ count($ambildatastock)}}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- The user image in the menu -->
+                            <li class="header">Produk tidak ada stok</li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <ul class="menu">
+                                    @foreach ($ambildatastock as $st)
+                                        <li>
+                                            <a href="{{ route('api.products') }}"></a>
+                                            <i class="fa fa-warning text-yellow"></i> {{ $st->nama }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

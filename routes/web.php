@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/exportProductKeluarAllExcel','ProductKeluarController@exportExcel')->name('exportExcel.productKeluarAll');
     Route::get('/exportProductKeluar/{id}','ProductKeluarController@exportProductKeluar')->name('exportPDF.productKeluar');
     Route::get('dropdownlist/getstates2/{id}','ProductKeluarController@getStates2');
+    Route::get('dropdownlist/getstates3/{id}','ProductKeluarController@getStates3');
     Route::get('/product_keluar/detail/{id}', 'ProductKeluarController@detail');
     Route::get('books/{id}/downloadspk', 'ProductKeluarController@download')->name('books.downloadspk');
     Route::get('books/{id}/downloadpfrom', 'ProductKeluarController@downloadDO')->name('books.downloadpfrom');
@@ -76,5 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/product_masuk/detail/{id}', 'ProductMasukController@detail');
     Route::get('books/{id}/download', 'ProductMasukController@download')->name('books.download');
     Route::get('books/{id}/downloadDO', 'ProductMasukController@downloadDO')->name('books.downloadDO');
+    Route::get('/productsIn/cari','ProductMasukController@cari');
+    Route::get('dtable-custom-posts', 'ProductMasukController@get_custom_posts');
 });
 

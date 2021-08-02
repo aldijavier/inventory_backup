@@ -31,7 +31,7 @@
                             <tr> 
                                 <th>Jenis Kategori</th>
                                 <th>:</th>
-                                <td> @if ($dt->jenis_kategori === '1')
+                                <td> @if ($dt->jenis_kategori == 1)
                                     <span>Asset</span>
                                 @else
                                     <span>Consumable</span>

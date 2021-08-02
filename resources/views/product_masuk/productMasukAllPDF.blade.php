@@ -49,6 +49,7 @@
             <th>Jenis Kategori</th>
             <th>Nama Kategori</th>
             <th>Nama Barang</th>
+            <th>Serial Number</th>
             <th>Tanggal Terima</th>
             <th>Lokasi Terima</th>
             <th>PO</th>
@@ -73,6 +74,7 @@
             @endif</td>
             <td>{{ $p->nama_kategori }}</td>
             <td>{{ $p->product->nama }}</td>
+            <td>{{ $p->serial_number }}</td>
             <td>{{ $p->tanggal_terima }}</td>
             <td>{{ $p->lokasi_terima }}</td>
             <td>{{ $p->po }}</td>

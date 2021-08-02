@@ -30,13 +30,27 @@
         <div class="box-header">
             <a onclick="addForm()" class="btn btn-primary" >Add Products</a>
             <a href="{{ route('exportPDF.productAll') }}" class="btn btn-danger">Export PDF</a>
-            <a href="{{ route('exportExcel.productAll') }}" class="btn btn-success">Export Excel</a>
+            <a href="{{ route('exportExcel.productAll') }}" class="btn btn-success">Export Excel</a><br>
         </div>
 
+        <?php
+            $ambildatastock = \DB::select("select * from products where qty < 1 and jenis_id = 2");
+        ?>
+
+<br>
+        @foreach ($ambildatastock as $st)
+        <div class="alert alert-danger d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>
+            <button type="button" class="close d-grid gap-2 col-6 mx-auto" data-dismiss="alert">&times;</button>
+            <strong>Perhatian!</strong> Stok {{ $st->nama }} telah habis
+        </div>
+        @endforeach
 
         <!-- /.box-header -->
         <div class="box-body">
-            <table id="products-table" class="table table-striped">
+            <table id="products-table" class="table table-striped table-responsive">
                 <thead>
                 <tr>
                     <th>ID</th>

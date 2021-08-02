@@ -44,7 +44,7 @@
                     <th>Departement PIC</th>
                     <th>Serial Number</th>
                     <th>PIC</th>
-                    <th></th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody></tbody>

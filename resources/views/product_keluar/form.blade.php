@@ -55,7 +55,10 @@
                                                 document.getElementById('serial_number').disabled=true;
                                             }
                                     }
-                            </script>  
+                            </script>
+                        <?php
+                            $ambildatastock = \DB::select("select * from products where qty < 1 and jenis_id = 2");
+                        ?>  
                         <div class="form-group">
                             <label >Nama Kategori</label>
                             <select name="nama_kategori" id="nama_kategori" class="form-control" required>
@@ -94,7 +97,7 @@
                                                if(countryID)
                                                {
                                                   jQuery.ajax({
-                                                     url : 'dropdownlist/getstates1/' +countryID,
+                                                     url : 'dropdownlist/getstates3/' +countryID,
                                                      type : "GET",
                                                      dataType : "json",
                                                      success:function(data)

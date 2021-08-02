@@ -15,7 +15,7 @@ use App\UserDemand;
 use DB;
 use Carbon\Carbon;
 use App\Location;
-
+use Response;
 
 class ProductKeluarController extends Controller
 {
@@ -102,6 +102,16 @@ class ProductKeluarController extends Controller
         return response()->download($pathToFile);
     }
 
+    public function getStates3($id) 
+    {
+        // $states = \DB::select("select * from products where qty >= 1 and jenis_id = 2");        
+        $states = DB::table("products")
+        ->where("category_id", $id)
+        ->Where('qty', '>=', 1)
+        ->pluck("nama", "id");
+        return json_encode($states);
+    }
+
     public function getStates2($id) 
     {        
         $states = DB::table("user_demands")->where("dept",$id)->pluck("nama_karyawan", "nama_karyawan");
@@ -120,12 +130,19 @@ class ProductKeluarController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-        //    'product_id'     => 'required',
-        //    'customer_id'    => 'required',
-        //    'qty'            => 'required',
-        //    'tanggal'           => 'required'
+           'pic'     => 'required',
+           'jenis_kategori'    => 'required',
+           'nama_kategori'            => 'required',
+           'product_id'           => 'required',
+           'lokasi_pengambilan'           => 'required',
+           'tanggal_keluar'           => 'required',
+           'lokasi_pemasangan'           => 'required',
+           'departement'           => 'required',
+           'departement_pic'           => 'required',
+           'qty'           => 'required',
+           'remarks'           => 'required'
         ]);
-
+        
         // Product_Masuk::create($request->all());
         $product=Product_Keluar::create([
             'pic' => $request->pic,
@@ -184,16 +201,30 @@ class ProductKeluarController extends Controller
             
                 
             // $product = Product_Keluar::create($request->all());
-            $product = Product::findOrFail($request->product_id);
-            if($product->qty >= $request->qty) {
-                $product->qty -= $request->qty;
-                $product->save();
-                return response()->json([
-                    'success'    => true,
-                    'message'    => 'Products Out Created'
-                ]);
-            } else if($product->qty <= $request->qty){
-                return redirect()->back()->withErrors($validator)->withInput();
+            $product1 = Product::findOrFail($request->product_id);
+            if($request->jenis_kategori == 1){
+                    $product1->save();
+                    return response()->json([
+                        'success'    => true,
+                        'message'    => 'Product Asset Created'
+                    ]);
+            } else if($request->jenis_kategori == 2){
+                if($product1->qty >= $request->qty) {
+                    $product1->qty -= $request->qty;
+                    $product1->save();
+                    return response()->json([
+                        'success'    => true,
+                        'message'    => 'Product Consumable Created'
+                    ]);
+                } else{
+                    // return Response::make('Not Found', 404);
+                    DB::rollback();
+                    return Response::make('Not Found', 404);
+                    // return response()->json([
+                    //     'error'    => true,
+                    //     'message'    => 'Product out of Stock'
+                    // ]);
+                }
             }
         }
     }
@@ -322,9 +353,9 @@ class ProductKeluarController extends Controller
             //     return $pic->product->nama_karyawan;
             // })
             ->addColumn('action', function($product){
-                return '<a href="/product_keluar/detail/'. $product->id .'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Show</a>' .
-                    '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i> Edit</a> ' .
-                    '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+                return '<a href="/product_keluar/detail/'. $product->id .'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>' .
+                    '<a onclick="editForm('. $product->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
+                    '<a onclick="deleteData('. $product->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
             })
             ->rawColumns(['products_name','action'])->make(true);
 
