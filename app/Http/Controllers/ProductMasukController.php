@@ -49,7 +49,13 @@ class ProductMasukController extends Controller
 
         $invoice_data = Product_Masuk::all();
         
-        return view('product_masuk.index', compact('invoice_data', 'categoryz', 'location', 'productsz', 'category'));
+        $awal = date('Y-m-d', strtotime('-1 days'));
+        $akhir = date('Y-m-d');
+
+        $jenis_kategoriz = Product_Masuk::all();
+        $nama = $invoice_data->sortBy('jenis_kategori')->pluck('jenis_kategori')->unique();
+
+        return view('product_masuk.index', compact('nama','awal', 'akhir', 'invoice_data', 'categoryz', 'location', 'productsz', 'category'));
     }
 
     /**
@@ -68,6 +74,16 @@ class ProductMasukController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function filter(Request $request){
+        $awal = date('Y-m-d', strtotime($request->awal));
+        $akhir = date('Y-m-d', strtotime($request->akhir));
+
+        $title = "Histori Transaksi Produk Masuk";
+        $data = Product_Masuk::whereDate('created_at', '>=', $awal)->whereDate('created_at', '<=', $akhir)->orderBy('created_at', 'desc')->get();
+
+        return view('product_masuk.index', compact('awal', 'akhir', 'title', 'data'));
+    }
 
     public function download($uuid)
     {

@@ -29,7 +29,49 @@
             <a onclick="addForm()" class="btn btn-primary" >Add Products In</a>
             <a href="{{ route('exportPDF.productMasukAll') }}" class="btn btn-danger">Export PDF</a>
             <a href="{{ route('exportExcel.productMasukAll') }}" class="btn btn-success">Export Excel</a>
+            {{-- <button class="btn btn-warning btn-filter"><i class="fa fa-filter"></i> Filter Tanggal</button> --}}
         </div>
+
+        
+
+        <!-- modal filter -->
+        <div class="modal fade" id="modal-filter" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+            <div class="modal-dialog modal-default modal-dialog-centered modal-" role="document">
+              <div class="modal-content bg-gradient-danger">
+           
+                <div class="modal-header">
+                  <h6 class="modal-title" id="modal-title-notification">Filter Tanggal</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+           
+                <div class="modal-body">
+           
+                  <form role="form" method="get" action="{{ route('filtertanggal') }}">
+                    {{ csrf_field() }} {{ method_field('GET') }}
+                    <div class="box-body">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Tanggal awal</label>
+                        <input type="text" class="form-control datepicker" data-provide="datepicker" id="awal" placeholder="Dari" autocomplete="off" name="awal" value="{{ $awal }}">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Tanggal akhir</label>
+                        <input type="text" name="akhir" class="form-control datepicker" id="akhir" data-provide="datepicker" placeholder="Sampai" autocomplete="off" value="{{ $akhir }}">
+                      </div>
+                    </div>
+                    <!-- /.box-body -->
+           
+                    <div class="box-footer">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </form>
+           
+                </div>
+           
+              </div>
+            </div>
+          </div>
 
         <!-- /.box-header -->
         <div class="box-body">
@@ -55,6 +97,22 @@
                 </thead>
                 <tbody>
                 </tbody>
+                <thead>
+                    <tr>
+                        <td>
+                            <select data-column="0" class="form-control filter-select">
+                                <option value=""> Pilih Kategori </option>
+                                @foreach ($nama as $jd)
+                                    <option value="{{ $jd }}"> 
+                                     @if ($jd == 1)
+                                        <span>Asset</span>
+                                    @else
+                                        <span>Consumable</span>
+                                    @endif</option>
+                                @endforeach
+                        </td>
+                    </tr>
+                </thead>
             </table>
         </div>
         </div>
@@ -166,6 +224,15 @@
         })
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.btn-filter').click(function(e){
+                e.preventDefault();
+                $('#modal-filter').modal();
+            })
+        })
+    </script>
+
     <script type="text/javascript">  
         $('#btn').click(function(e) {
             var i=1;
@@ -236,6 +303,12 @@
                 // {data: 'serial_number', name: 'serial_number'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
+        });
+
+        $('.filter-select').change(function() {
+            table.column( $(this).data('column'))
+                .search( $(this).val())
+                .draw();
         });
 
         function addForm() {

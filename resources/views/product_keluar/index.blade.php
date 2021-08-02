@@ -293,7 +293,7 @@
                         },
                         error : function(data){
                             swal({
-                                title: 'Product out of Stock',
+                                title: 'Serial number sudah digunakan',
                                 text: data.message,
                                 type: 'error',
                                 timer: '1500'

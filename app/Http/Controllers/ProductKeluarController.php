@@ -68,8 +68,11 @@ class ProductKeluarController extends Controller
             ->get()
             ->pluck('nama','id');
 
+        $awal = date('Y-m-d', strtotime('-1 days'));
+        $akhir = date('Y-m-d');
+
         $invoice_data = Product_Keluar::all();
-        return view('product_keluar.index', compact('invoice_data', 'categoryz', 'location', 'productsz', 'category', 'departements', 'departementspic', 'deptpic', 'productawal'));
+        return view('product_keluar.index', compact('awal', 'akhir','invoice_data', 'categoryz', 'location', 'productsz', 'category', 'departements', 'departementspic', 'deptpic', 'productawal'));
     }
 
     /**
@@ -159,12 +162,12 @@ class ProductKeluarController extends Controller
             'remarks' => $request->remarks,
         ]);
 
+
         if($product){
             $created_date=Carbon::now(); 
         // use within single line code
             // error_log('Some message here.');
             $id=$product->id;
-
             //upload file
             if($request->file('spk')){
                 $extension1 = $request->file('spk')->getClientOriginalExtension();
@@ -202,6 +205,7 @@ class ProductKeluarController extends Controller
                 
             // $product = Product_Keluar::create($request->all());
             $product1 = Product::findOrFail($request->product_id);
+
             if($request->jenis_kategori == 1){
                     $product1->save();
                     return response()->json([

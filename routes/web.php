@@ -79,5 +79,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('books/{id}/downloadDO', 'ProductMasukController@downloadDO')->name('books.downloadDO');
     Route::get('/productsIn/cari','ProductMasukController@cari');
     Route::get('dtable-custom-posts', 'ProductMasukController@get_custom_posts');
+    Route::get('/productsIn/filter', 'ProductMasukController@filter')->name('filtertanggal');
 });
 
