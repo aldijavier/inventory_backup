@@ -41,7 +41,7 @@
     </div>
 
     @include('categories.form')
-
+    @include('categories.form_import')
 @endsection
 
 @section('bot')

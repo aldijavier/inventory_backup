@@ -68,6 +68,7 @@
     </div>
 
     @include('products.form')
+    @include('products.form_import')
 
 @endsection
 

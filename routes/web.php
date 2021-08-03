@@ -30,7 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/apiCategories','CategoryController@apiCategories')->name('api.categories');
     Route::get('/exportCategoriesAll','CategoryController@exportCategoriesAll')->name('exportPDF.categoriesAll');
     Route::get('/exportCategoriesAllExcel','CategoryController@exportExcel')->name('exportExcel.categoriesAll');
-    
+    Route::post('/importcategories','CategoryController@ImportExcel')->name('import.categories');
 
     Route::resource('customers','CustomerController');
     Route::get('/apiCustomers','CustomerController@apiCustomers')->name('api.customers');
@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/exportProductAll','ProductController@exportProductAll')->name('exportPDF.productAll');
     Route::get('/exportProductAllExcel','ProductController@exportExcel')->name('exportExcel.productAll');
     Route::get('dropdownlist/getstates/{id}','ProductController@getStates');
+    Route::post('/importproducts','ProductController@ImportExcel')->name('import.products');
 
     Route::resource('productsOut','ProductKeluarController');
     Route::get('/apiProductsOut','ProductKeluarController@apiProductsOut')->name('api.productsOut');

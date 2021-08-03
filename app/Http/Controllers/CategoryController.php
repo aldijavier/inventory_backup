@@ -7,6 +7,8 @@ use App\Exports\ExportCategories;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use PDF;
+use Excel;
+use App\Imports\CategoriesImport;
 
 class CategoryController extends Controller
 {
@@ -33,6 +35,23 @@ class CategoryController extends Controller
     public function create()
     {
         //
+    }
+
+    public function ImportExcel(Request $request)
+    {
+        //Validasi
+        $this->validate($request, [
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        if ($request->hasFile('file')) {
+            //UPLOAD FILE
+            $file = $request->file('file'); //GET FILE
+            Excel::import(new CategoriesImport, $file); //IMPORT FILE
+            return redirect()->back()->with(['success' => 'Upload file data category !']);
+        }
+
+        return redirect()->back()->with(['error' => 'Please choose file before!']);
     }
 
     /**
