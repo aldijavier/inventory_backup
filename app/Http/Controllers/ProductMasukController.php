@@ -52,8 +52,8 @@ class ProductMasukController extends Controller
         $awal = date('Y-m-d', strtotime('-1 days'));
         $akhir = date('Y-m-d');
 
-        $jenis_kategoriz = Product_Masuk::all();
-        $nama = $invoice_data->sortBy('jenis_kategori')->pluck('jenis_kategori')->unique();
+        $jenis_kategoriz = ListCategory::all();
+        $nama = $jenis_kategoriz->sortBy('name')->pluck('name')->unique();
 
         return view('product_masuk.index', compact('nama','awal', 'akhir', 'invoice_data', 'categoryz', 'location', 'productsz', 'category'));
     }
@@ -187,6 +187,7 @@ class ProductMasukController extends Controller
             // dd($create_form);
             if($request->jenis_kategori == 1){
             $addNol = '';
+            // $addNol = Product_Masuk::orderBy($id)->latest()->take(1)->get();
             if (strlen($id) == 1) {
                 $addNol = "000$id";
             } elseif (strlen($id) == 2) {

@@ -100,15 +100,10 @@
                 <thead>
                     <tr>
                         <td>
-                            <select data-column="0" class="form-control filter-select">
+                            <select data-column="5" class="form-control filter-select">
                                 <option value=""> Pilih Kategori </option>
                                 @foreach ($nama as $jd)
-                                    <option value="{{ $jd }}"> 
-                                     @if ($jd == 1)
-                                        <span>Asset</span>
-                                    @else
-                                        <span>Consumable</span>
-                                    @endif</option>
+                                    <option value="{{ $jd }}"> {{ $jd }}
                                 @endforeach
                         </td>
                     </tr>
@@ -118,7 +113,11 @@
         </div>
         <!-- /.box-body -->
     </div>
-
+    {{-- @if ($jd == 1)
+    <span>Asset</span>
+@else
+    <span>Consumable</span>
+@endif</option> --}}
     <div class="box col-md-6">
 
         {{-- <div class="box-header">
