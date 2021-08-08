@@ -88,7 +88,7 @@ desired effect
                     <!-- Messages: style can be found in dropdown.less-->
                     <!-- User Account Menu -->
                     <?php
-                        $ambildatastock = \DB::select("select * from products where qty < 1 and jenis_id = 2");
+                        $ambildatastock = \DB::select("select * from products where qty < minimal_qty and jenis_id = 2");
                     ?>
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
@@ -98,7 +98,7 @@ desired effect
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
-                            <li class="header">Produk tidak ada stok</li>
+                            <li class="header">Produk kurang dari stok minimal</li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <ul class="menu">

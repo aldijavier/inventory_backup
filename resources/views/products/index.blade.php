@@ -34,7 +34,7 @@
         </div>
 
         <?php
-            $ambildatastock = \DB::select("select * from products where qty < 1 and jenis_id = 2");
+            $ambildatastock = \DB::select("select * from products where qty < minimal_qty and jenis_id = 2");
         ?>
 
 <br>
@@ -44,7 +44,7 @@
                 <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
               </svg>
             <button type="button" class="close d-grid gap-2 col-6 mx-auto" data-dismiss="alert">&times;</button>
-            <strong>Perhatian!</strong> Stok {{ $st->nama }} telah habis
+            <strong>Perhatian!</strong> Stok {{ $st->nama }} kurang dari stok minimal
         </div>
         @endforeach
 
@@ -58,6 +58,7 @@
                     <th>Nama Kategori</th>
                     <th>Nama Barang</th>
                     <th>QTY</th>
+                    <th>Minimal Qty</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -132,16 +133,17 @@
                 {data: 'qty', name: 'qty',
                 "render": function (data, type, row) {
                         if ( row.qty === 0) {
-                            return 'Tidak ada quantity';
+                            return '-';
                         }
                         else if(row.qty === null){
-                            return 'Tidak ada quantity'
+                            return '-'
                         }
                         else{
                             return data;
                         }
                     }
                 },
+                {data: 'minimal_qty', name: 'minimal_qty'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
@@ -171,6 +173,7 @@
                     $('#jenis_id').val(data.jenis_id).change();
                     $('#nama').val(data.nama);
                     $('#qty').val(data.qty);
+                    $('#minimal_qty').val(data.minimal_qty);
                 },
                 error : function() {
                     alert("Nothing Data");

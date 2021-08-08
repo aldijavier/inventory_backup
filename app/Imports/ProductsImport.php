@@ -19,7 +19,8 @@ class ProductsImport implements ToModel, WithHeadingRow
             'category_id'          => $row['category_id'],
             'jenis_id'        => $row['jenis_id'],
             'nama'         => $row['nama'],
-            'qty'       => $row['qty']
+            'qty'       => $row['qty'],
+            'minimal_qty'       => $row['minimal_qty']
         ]);
     }
 }

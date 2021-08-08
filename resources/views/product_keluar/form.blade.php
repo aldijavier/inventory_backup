@@ -57,7 +57,7 @@
                                     }
                             </script>
                         <?php
-                            $ambildatastock = \DB::select("select * from products where qty < 1 and jenis_id = 2");
+                            $ambildatastock = \DB::select("select * from products where qty < minimal_qty and jenis_id = 2");
                         ?>  
                         <div class="form-group">
                             <label >Nama Kategori</label>

@@ -31,6 +31,8 @@
                                         comp = document.getElementById('jenis_id');
                                             if(comp.value == 1) {
                                                 document.getElementById('qty').disabled=false;
+                                                document.getElementById('qty').value=1;
+                                                document.getElementById('minimal_qty').value=0;
                                             } else if(comp.value == 2) {
                                                 document.getElementById('qty').disabled=false;
                                             }
@@ -82,6 +84,11 @@
                         <div class="form-group">
                             <label >Quantity</label>
                             <input type="text" class="form-control" id="qty" name="qty">
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <label >Minimal Quantity</label>
+                            <input type="text" class="form-control" id="minimal_qty" name="minimal_qty">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

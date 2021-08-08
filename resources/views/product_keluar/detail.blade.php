@@ -65,7 +65,7 @@
                             <tr>
                                 <th>Departement</th>
                                 <th>:</th>
-                                <td>{{ $dt->departement }}</td>
+                                <td>{{ $dept->nama_departement }}</td>
                             </tr>
                             <tr>
                                 <th>Departement PIC</th>

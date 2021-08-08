@@ -186,14 +186,25 @@ class ProductMasukController extends Controller
 
             // dd($create_form);
             if($request->jenis_kategori == 1){
+            // $addNol = '';
+            $id2 = Product_Masuk::select(DB::raw('max(max_id) as id_max'))->where("jenis_kategori", "=", "1")->first();
+            $id2 = (int)$id2->id_max + 1;
+            
+            $create_form=Product_Masuk::where('id',$id)
+            ->update([
+            'max_id' => $id2
+            ]);
+
             $addNol = '';
-            // $addNol = Product_Masuk::orderBy($id)->latest()->take(1)->get();
-            if (strlen($id) == 1) {
-                $addNol = "000$id";
-            } elseif (strlen($id) == 2) {
-                $addNol = "00$id";
-            } elseif (strlen($id == 3)) {
-                $addNol = "0$id";
+            // $id3 = Product_Masuk::select(DB::raw('max(max_id) as id_max2'))->where("jenis_kategori", "=", "1")->first();
+            // $id3 = (int)$id2->id_max2 + 1;
+
+            if (strlen($id2) == 1) {
+                $addNol = "000$id2";
+            } elseif (strlen($id2) == 2) {
+                $addNol = "00$id2";
+            } elseif (strlen($id2 == 3)) {
+                $addNol = "0$id2";
             }
 
             $no_asset = $created_date->format('Y');

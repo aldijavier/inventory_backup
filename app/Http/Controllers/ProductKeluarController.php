@@ -110,8 +110,8 @@ class ProductKeluarController extends Controller
         // $states = \DB::select("select * from products where qty >= 1 and jenis_id = 2");        
         $states = DB::table("products")
         ->where("category_id", $id)
-        ->Where('qty', '>', 0)
-        ->pluck("nama", "id");
+        ->where ('qty', '>', 'minimal_qty')
+        ->pluck("nama");
         return json_encode($states);
     }
 
@@ -125,9 +125,11 @@ class ProductKeluarController extends Controller
     {
         $title = 'Detail Produk Masuk';
         $dt = Product_Keluar::find($id);
+        $dept = Departement::find($id);
+        $dept2 = Departement::all();
         $invoice_data = Product_Keluar::all();
 
-        return view('product_keluar.detail', compact('title', 'dt', 'invoice_data'));
+        return view('product_keluar.detail', compact('title', 'dt', 'invoice_data', 'dept', 'dept2'));
     }
 
     public function store(Request $request)
