@@ -81,5 +81,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/productsIn/cari','ProductMasukController@cari');
     Route::get('dtable-custom-posts', 'ProductMasukController@get_custom_posts');
     Route::get('/productsIn/filter', 'ProductMasukController@filter')->name('filtertanggal');
+
+    Route::resource('productsReturn','ProductReturnController');
+    Route::get('/apiProductsReturn','ProductReturnController@apiProductsOut')->name('api.productsReturn');
+    Route::get('/exportProductReturnAll','ProductReturnController@exportProductReturnAll')->name('exportPDF.productReturnAll');
+    Route::get('/exportProductReturnAllExcel','ProductReturnController@exportExcel')->name('exportExcel.productReturnAll');
+    Route::get('/exportProductReturn/{id}','ProductReturnController@exportProductReturn')->name('exportPDF.productReturn');
+    Route::get('dropdownlist/getstates2/{id}','ProductReturnController@getStates2');
+    Route::get('dropdownlist/getstates3/{id}','ProductReturnController@getStates3');
+    Route::get('/product_Return/detail/{id}', 'ProductReturnController@detail');
+    Route::get('books/{id}/downloadspk', 'ProductReturnController@download')->name('books.downloadspk');
+    Route::get('books/{id}/downloadpfrom', 'ProductReturnController@downloadDO')->name('books.downloadpfrom');
 });
 

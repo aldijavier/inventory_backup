@@ -39,7 +39,7 @@
             {{-- <li class="active"><a href="{{ route('suppliers.index') }}"><i class="fa fa-link"></i> <span>Supplier</span></a></li> --}}
             <li class="active"><a href="{{ route('productsOut.index') }}"><i class="fa fa-link"></i> <span>Product Out</span></a></li>
             <li class="active"><a href="{{ route('productsIn.index') }}"><i class="fa fa-link"></i> <span>Product In</span></a></li>
-            <li class="active"><a href="{{ route('productsIn.index') }}"><i class="fa fa-link"></i> <span>Product Return</span></a></li>
+            <li class="active"><a href="{{ route('productsReturn.index') }}"><i class="fa fa-link"></i> <span>Product Return</span></a></li>
 
 
 
